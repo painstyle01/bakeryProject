@@ -1,0 +1,1 @@
+web: gunicorn bakeryProject.wsgi --log-file -
