@@ -14,12 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.template.defaulttags import url
 from django.urls import path, include, re_path
 from rest_framework import routers
 from api import views
 from django.conf.urls.static import static
 from django.conf import settings
 
+from api.views import PayCallbackView
 
 router = routers.DefaultRouter()
 
@@ -30,6 +32,8 @@ router.register(r'categories', views.CategoriesViewSet)
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^api/", include(router.urls)),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('checkout/', views.checkout, name='checkout'),
+    path(r'^api/pay-callback/$', PayCallbackView.as_view())
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

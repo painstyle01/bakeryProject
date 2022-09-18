@@ -1,5 +1,11 @@
-from .models import Categories, Product, DiscountCodes
+from .models import Categories, Product, DiscountCodes, MainPage
 from rest_framework import serializers
+
+
+class MainPageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = MainPage
+        fields = ('text', 'pic')
 
 
 class DiscountCodesSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,10 +17,10 @@ class DiscountCodesSerializer(serializers.HyperlinkedModelSerializer):
 class CategoriesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Categories
-        fields = ('title', 'image')
+        fields = ('title')
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
-        fields = ('title', 'image', 'category', 'description', 'price', 'availability')
+        fields = ("id", 'title', 'image', 'category', 'description', 'price', 'availability')

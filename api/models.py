@@ -10,10 +10,16 @@ def unique_rand():
             return code
 
 
+class MainPage(models.Model):
+    text = models.TextField()
+    pic = models.ImageField(upload_to='main_page')
+
+    def __str__(self):
+        return self.text
+
 class Categories(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.TextField(max_length=300)
-    image = models.ImageField(upload_to="categories")
 
     def __str__(self):
         return self.title
