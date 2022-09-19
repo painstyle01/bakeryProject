@@ -1,4 +1,5 @@
-from .models import Categories, Product, DiscountCodes, MainPage
+from dataclasses import field
+from .models import Categories, Order, Product, DiscountCodes, MainPage
 from rest_framework import serializers
 
 
@@ -24,3 +25,9 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
         fields = ("id", 'title', 'image', 'category', 'description', 'price', 'availability')
+
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Order
+        fields = ("id", "name", 'cart', "contact_phone", "email", 'delivery_type', "messanger", "payment_type")

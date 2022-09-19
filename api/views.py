@@ -1,3 +1,4 @@
+import imp
 import random
 
 from django.http import HttpResponse
@@ -6,13 +7,18 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from rest_framework import viewsets
 from .models import *
-from .serializers import DiscountCodesSerializer, ProductSerializer, CategoriesSerializer, MainPageSerializer
+from .serializers import DiscountCodesSerializer, OrderSerializer, ProductSerializer, CategoriesSerializer, \
+    MainPageSerializer
 import json
 from liqpay import LiqPay
 from django.views.decorators.csrf import csrf_exempt
+import telebot
 
 PUBLIC_KEY = "sandbox_i20334026307"
 PRIVATE_KEY = "sandbox_gi37dYhcivXvsbBvsJD1FBobwRpjmrDM3q4CtNQn"
+
+BOT_TOKEN = "5611537678:AAFlY1cUgbyRDQaCMzM4j92MXriAnz2nCAA"
+CHANNEL_ID = "-1001742666834"
 
 
 @csrf_exempt
@@ -21,13 +27,14 @@ def checkout(request):
         data = json.loads(request.body.decode())
         print(data)
         cash = data["money"]
+        order = data['order_id']
         liqpay = LiqPay(PUBLIC_KEY, PRIVATE_KEY)
         params = {
             'action': 'pay',
             'amount': cash,
             'currency': 'UAH',
-            'description': f'Онлайн оплата замовлення: 123',
-            'order_id': random.randint(0, 1000000000),
+            'description': f'Онлайн оплата замовлення: {order}',
+            'order_id': str(order),
             'version': '3',
             'sandbox': 1,  # sandbox mode, set to 1 to enable it
             'server_url': 'http://165.227.148.180:8000/api/pay-callback/',
@@ -36,6 +43,8 @@ def checkout(request):
         resp = liqpay.cnb_form(params)
         print(resp)
         return HttpResponse(resp)
+    else:
+        return HttpResponse(403)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -49,7 +58,20 @@ class PayCallbackView(View):
             print('callback is valid')
         response = liqpay.decode_data_from_str(data)
         print('callback data', response)
-        return HttpResponse()
+        if response["status"] == "success" or response["status"] == "sandbox":
+            order = Order.objects.get(id=response["order_id"])
+            send_message_to_channel({"text": {
+                f"НОВЕ ЗАМОВЛЕННЯ: {order.id}\n{order.cart},\n\n{order.contact_phone}({order.email}\n\nОПЛАЧЕНО ОНЛАЙН)"}})
+        return HttpResponse(200)
+
+
+def send_message_to_channel(request):
+    if request.method == "POST":
+        bot = telebot.TeleBot(BOT_TOKEN)
+        bot.send_message(CHANNEL_ID, f"{request['text']}")
+        return HttpResponse(200)
+    else:
+        return HttpResponse(403)
 
 
 # Create your views here.
@@ -71,3 +93,8 @@ class CategoriesViewSet(viewsets.ModelViewSet):
 class MainPageViewSet(viewsets.ModelViewSet):
     queryset = MainPage.objects.all()
     serializer_class = MainPageSerializer
+
+
+class OrdersViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer

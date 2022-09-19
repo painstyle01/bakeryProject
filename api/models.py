@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 
 from django.contrib.auth.models import User
@@ -25,6 +26,18 @@ class Categories(models.Model):
     def __str__(self):
         return self.title
 
+class Order(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.TextField()
+    cart = models.TextField()
+    contact_phone = models.TextField()
+    email = models.TextField()
+    delivery_type = models.TextField()
+    messanger = models.TextField()
+    payment_type = models.TextField()
+
+    def __str__(self) -> str:
+        return str(self.id)
 
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
