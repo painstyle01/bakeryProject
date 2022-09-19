@@ -28,12 +28,13 @@ router = routers.DefaultRouter()
 router.register(r'products', views.ProductViewSet)
 router.register(r'codes', views.DiscoutCodesViewSet)
 router.register(r'categories', views.CategoriesViewSet)
+router.register(r'mainpage', views.MainPageViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^api/", include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('checkout/', views.checkout, name='checkout'),
-    path(r'^api/pay-callback/$', PayCallbackView.as_view())
+    re_path(r'^api/pay-callback/$', PayCallbackView.as_view())
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

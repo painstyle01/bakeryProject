@@ -5,7 +5,7 @@ from rest_framework import serializers
 class MainPageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = MainPage
-        fields = ('text', 'pic')
+        fields = ('title', 'text', 'pic')
 
 
 class DiscountCodesSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,7 +17,7 @@ class DiscountCodesSerializer(serializers.HyperlinkedModelSerializer):
 class CategoriesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Categories
-        fields = ('title')
+        fields = ('title',)
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):

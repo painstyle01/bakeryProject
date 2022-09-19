@@ -11,6 +11,7 @@ def unique_rand():
 
 
 class MainPage(models.Model):
+    title = models.TextField()
     text = models.TextField()
     pic = models.ImageField(upload_to='main_page')
 

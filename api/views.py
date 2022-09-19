@@ -11,8 +11,8 @@ import json
 from liqpay import LiqPay
 from django.views.decorators.csrf import csrf_exempt
 
-PUBLIC_KEY = "sandbox_i34833063512"
-PRIVATE_KEY = "sandbox_cuqc4wGddoGwXZz0spEhMpkanF4NY88Ja8ADeUQo"
+PUBLIC_KEY = "sandbox_i20334026307"
+PRIVATE_KEY = "sandbox_gi37dYhcivXvsbBvsJD1FBobwRpjmrDM3q4CtNQn"
 
 
 @csrf_exempt
