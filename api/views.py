@@ -1,6 +1,4 @@
-from ast import Or
-from curses.ascii import HT
-import imp
+
 import random
 
 from django.http import HttpResponse
@@ -62,7 +60,7 @@ class PayCallbackView(View):
         print('callback data', response)
         if response["status"] == "success" or response["status"] == "sandbox":
             order = Order.objects.get(id=response["order_id"])
-            send_message_tors_channel({"text": {
+            send_message_to_channel({"text": {
                 f"НОВЕ ЗАМОВЛЕННЯ: {order.id}\n{order.cart},\n\n{order.contact_phone}({order.email}\n\nОПЛАЧЕНО ОНЛАЙН)"}})
         return HttpResponse(200)
 
