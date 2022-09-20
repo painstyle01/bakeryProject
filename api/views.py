@@ -64,11 +64,13 @@ class PayCallbackView(View):
                 f"НОВЕ ЗАМОВЛЕННЯ: {order.id}\n{order.cart},\n\n{order.contact_phone}({order.email}\n\nОПЛАЧЕНО ОНЛАЙН)"}})
         return HttpResponse(200)
 
-
+@csrf_exempt
 def send_message_to_channel(request):
     if request.method == "POST":
         bot = telebot.TeleBot(BOT_TOKEN)
-        bot.send_message(CHANNEL_ID, f"{request['text']}")
+        data = json.loads(request.body.decode())
+        print(data)
+        bot.send_message(CHANNEL_ID, f"{data['text']}")
         return HttpResponse(200)
     else:
         return HttpResponse(403)
