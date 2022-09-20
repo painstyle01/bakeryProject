@@ -14,7 +14,7 @@ def unique_rand():
 class MainPage(models.Model):
     title = models.TextField()
     text = models.TextField()
-    pic = models.ImageField(upload_to='main_page')
+    pic = models.ImageField(upload_to="main_page")
 
     def __str__(self):
         return self.text
@@ -42,7 +42,7 @@ class Order(models.Model):
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.TextField(max_length=200)
-    image = models.ImageField(upload_to='products')
+    image = models.ImageField(upload_to="products")
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.IntegerField()

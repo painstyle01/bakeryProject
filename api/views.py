@@ -1,3 +1,5 @@
+from ast import Or
+from curses.ascii import HT
 import imp
 import random
 
@@ -60,7 +62,7 @@ class PayCallbackView(View):
         print('callback data', response)
         if response["status"] == "success" or response["status"] == "sandbox":
             order = Order.objects.get(id=response["order_id"])
-            send_message_to_channel({"text": {
+            send_message_tors_channel({"text": {
                 f"НОВЕ ЗАМОВЛЕННЯ: {order.id}\n{order.cart},\n\n{order.contact_phone}({order.email}\n\nОПЛАЧЕНО ОНЛАЙН)"}})
         return HttpResponse(200)
 
@@ -75,6 +77,23 @@ def send_message_to_channel(request):
     else:
         return HttpResponse(403)
 
+@csrf_exempt
+def add_order(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode())
+        name = data["name"]
+        cart = data["cart"]
+        phone = data["phone"]
+        email = data["email"]
+        delivery = data['delivery']
+        messanger = data["messanger"]
+        payment = data['payment']
+        object_instance = Order.objects.create(name = name, cart = cart, contact_phone = phone, email = email, delivery_type = delivery, messanger = messanger, payment_type = payment)
+        object_instance.save()
+        print(object_instance)
+        return HttpResponse(object_instance)
+    else:
+        return HttpResponse(403)
 
 # Create your views here.
 class DiscoutCodesViewSet(viewsets.ModelViewSet):

@@ -37,6 +37,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('checkout/', views.checkout, name='checkout'),
     re_path(r'^api/pay-callback/$', PayCallbackView.as_view()),
-    path('send_bot/', views.send_message_to_channel, name='send_bot')
+    path('send_bot/', views.send_message_to_channel, name='send_bot'),
+    path('add_order/', views.add_order, name="add_order")
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
