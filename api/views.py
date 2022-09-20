@@ -60,9 +60,14 @@ class PayCallbackView(View):
         print('callback data', response)
         if response["status"] == "success" or response["status"] == "sandbox":
             order = Order.objects.get(id=response["order_id"])
-            send_message_to_channel({"text": {
+            send_payment_to_channel({"text": {
                 f"НОВЕ ЗАМОВЛЕННЯ: {order.id}\n{order.cart},\n\n{order.contact_phone}({order.email}\n\nОПЛАЧЕНО ОНЛАЙН)"}})
         return HttpResponse(200)
+
+def send_payment_to_channel(request):
+    bot = telebot.TeleBot(BOT_TOKEN)
+    bot.send_message(CHANNEL_ID, f"{request['text']}")
+    
 
 @csrf_exempt
 def send_message_to_channel(request):
