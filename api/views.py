@@ -37,8 +37,8 @@ def checkout(request):
             'order_id': str(order),
             'version': '3',
             'sandbox': 1,  # sandbox mode, set to 1 to enable it
-            'server_url': 'http://165.227.148.180:8000/api/pay-callback/',
-            'result_url': "https://google.com"
+            'server_url': 'https://185.65.244.209:3000/api/pay-callback/',
+            'result_url': "https://http://guculybakery.com.ua/"
         }
         resp = liqpay.cnb_form(params)
         print(resp)
@@ -79,6 +79,18 @@ def send_message_to_channel(request):
         return HttpResponse(200)
     else:
         return HttpResponse(403)
+
+@csrf_exempt
+def use_promo(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode())
+        print(data)
+        code = data['code']
+        v = DiscountCodes.objects.get(code = code)
+        old = v.usages
+        v.usages = old - 1
+        v.save()
+        return HttpResponse(200)
 
 @csrf_exempt
 def add_order(request):

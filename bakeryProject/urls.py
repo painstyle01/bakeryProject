@@ -21,7 +21,7 @@ from api import views
 from django.conf.urls.static import static
 from django.conf import settings
 
-from api.views import PayCallbackView
+from api.views import PayCallbackView, use_promo
 
 router = routers.DefaultRouter()
 
@@ -38,6 +38,7 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     re_path(r'^api/pay-callback/$', PayCallbackView.as_view()),
     path('send_bot/', views.send_message_to_channel, name='send_bot'),
-    path('add_order/', views.add_order, name="add_order")
+    path('add_order/', views.add_order, name="add_order"),
+    path("use_promo/", views.use_promo, name="use_promo")
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
