@@ -38,7 +38,7 @@ def checkout(request):
             'version': '3',
             'sandbox': 1,  # sandbox mode, set to 1 to enable it
             'server_url': 'https://185.65.244.209:3000/api/pay-callback/',
-            'result_url': "https://http://guculybakery.com.ua/"
+            'result_url': "https://guculybakery.com.ua/payment"
         }
         resp = liqpay.cnb_form(params)
         print(resp)
@@ -60,14 +60,12 @@ class PayCallbackView(View):
         print('callback data', response)
         if response["status"] == "success" or response["status"] == "sandbox":
             order = Order.objects.get(id=response["order_id"])
-            send_payment_to_channel({"text": {
-                f"НОВЕ ЗАМОВЛЕННЯ: {order.id}\n{order.cart},\n\n{order.contact_phone}({order.email}\n\nОПЛАЧЕНО ОНЛАЙН)"}})
+            send_payment_to_channel(f"НОВЕ ЗАМОВЛЕННЯ: {order.id}\n{order.cart}\n{order.name}\n{order.contact_phone}|{order.email}\nMessager: {order.messanger}\n{order.delivery_type}\nОПЛАЧЕНО ОНЛАЙН")
         return HttpResponse(200)
 
-def send_payment_to_channel(request):
+def send_payment_to_channel(text):
     bot = telebot.TeleBot(BOT_TOKEN)
-    bot.send_message(CHANNEL_ID, f"{request['text']}")
-    
+    bot.send_message(CHANNEL_ID, f"{text}")
 
 @csrf_exempt
 def send_message_to_channel(request):

@@ -35,10 +35,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^api/", include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
-    path('checkout/', views.checkout, name='checkout'),
+    path('api/checkout/', views.checkout, name='checkout'),
+    path('api/send_bot/', views.send_message_to_channel, name='send_bot'),
+    path('api/add_order/', views.add_order, name="add_order"),
+    path("api/use_promo/", views.use_promo, name="use_promo"),
     re_path(r'^api/pay-callback/$', PayCallbackView.as_view()),
-    path('send_bot/', views.send_message_to_channel, name='send_bot'),
-    path('add_order/', views.add_order, name="add_order"),
-    path("use_promo/", views.use_promo, name="use_promo")
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
