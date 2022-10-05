@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from rest_framework import viewsets
 from .models import *
-from .serializers import DiscountCodesSerializer, OrderSerializer, ProductSerializer, CategoriesSerializer, \
+from .serializers import AboutUsSerializer, DiscountCodesSerializer, OfertaSerializer, OrderSerializer, ProductSerializer, CategoriesSerializer, \
     MainPageSerializer
 import json
 from liqpay import LiqPay
@@ -129,6 +129,22 @@ class MainPageViewSet(viewsets.ModelViewSet):
     serializer_class = MainPageSerializer
 
 
+class AboutUsViewSet(viewsets.ModelViewSet):
+    queryset = AboutUs.objects.all()
+    serializer_class = AboutUsSerializer
+
+class OfertaViewSet(viewsets.ModelViewSet):
+    queryset = Oferta.objects.all()
+    serializer_class = OfertaSerializer
+
+class DeliveryAndPaymentViewSet(viewsets.ModelViewSet):
+    queryset = DeliveryAndPayment.objects.all()
+    serializer_class = OrderSerializer
+
 class OrdersViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+class PrivacyPolicyViewSet(viewsets.ModelViewSet):
+    queryset = PrivacyPolicy.objects.all()
+    serializer_class = PrivacyPolicy

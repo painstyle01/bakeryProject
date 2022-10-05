@@ -30,6 +30,10 @@ router.register(r'codes', views.DiscoutCodesViewSet)
 router.register(r'categories', views.CategoriesViewSet)
 router.register(r'mainpage', views.MainPageViewSet)
 router.register(r'order', views.OrdersViewSet)
+router.register(r'oferta', views.OfertaViewSet)
+router.register(r'about_us', views.AboutUsViewSet)
+router.register(r'privacy_policy', views.PrivacyPolicyViewSet)
+router.register(r'delivery_and_payment', views.DeliveryAndPaymentViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),

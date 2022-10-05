@@ -1,4 +1,6 @@
+from email.policy import default
 from statistics import mode
+from turtle import title
 from django.db import models
 
 from django.contrib.auth.models import User
@@ -57,3 +59,19 @@ class DiscountCodes(models.Model):
     usages = models.IntegerField()
     discount_percentage = models.IntegerField()
     code = models.TextField(default=unique_rand, unique=True)
+
+class PrivacyPolicy(models.Model):
+    title = models.TextField(default="Політика конфіденційності")
+    text = models.TextField()
+
+class Oferta(models.Model):
+    title = models.TextField(default='Оферта')
+    text = models.TextField()
+
+class AboutUs(models.Model):
+    title = models.TextField(default='Про нас')
+    text = models.TextField()
+
+class DeliveryAndPayment(models.Model):
+    title = models.TextField(default="Оплата і доставка")
+    text = models.TextField()
